@@ -48,4 +48,41 @@ You can also pass `NULL` (or an empty array) as data, in which case, the element
 Examples
 ===
 
-...
+###form.tpl.html
+
+    <form action="http://example.org" method="post">
+    <p class="error"><b>Yay</b></p><p class="error">Fail</p>
+    <p>
+      <input type="text" name="name" value="no name" />
+    </p>
+    <p>
+      <input type="password" name="password" />
+    </p>
+    <p>
+      <input type="submit" id="login" />
+    </p>
+    </form>
+
+###form.php
+
+    echo domplate_bind(
+      file_get_contents('form.tpl.html'),
+      array(
+        'form:action' => 'http://example.org',
+        'p.error!' => array('<b>Yay</b>', 'Fail'),
+        '#name:value' => 'no name'));
+
+###Output
+
+    <form action="http://example.org" method="post">
+    <p class="error"><b>Yay</b></p><p class="error">Fail</p>
+    <p>
+      <input type="text" name="name" value="no name" />
+    </p>
+    <p>
+      <input type="password" name="password" />
+    </p>
+    <p>
+      <input type="submit" id="login" />
+    </p>
+    </form>
