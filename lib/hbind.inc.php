@@ -1,28 +1,28 @@
 <?php
 /**
- * Domplate -- `sprintf` for HTML
+ * Hbind -- `sprintf` for HTML
  */
 
 /**
  * Bind selectors to a template.
- * Uses domplate selectors to identify targets to replace with values.
+ * Uses hbind selectors to identify targets to replace with values.
  * Takes an associative array of selector => value.
  * A value may be a string, an array of strings or NULL.
  * Binding NULL will remove the selected element from the source
  */
-function domplate_bind($template, $parameters = array()) {
+function hbind($template, $parameters = array()) {
   foreach ($parameters as $identifier => $value) {
-    $selector = new domplate_Selector($identifier);
+    $selector = new hbind_Selector($identifier);
     $template = $selector->bind($template, $value);
   }
   return $template;
 }
 
 /**
- * A domplate selector.
+ * A hbind selector.
  * A selector can scan html and replace parts.
  */
-class domplate_Selector {
+class hbind_Selector {
   protected $name;
   protected $id;
   protected $class;

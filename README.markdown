@@ -1,4 +1,4 @@
-Domplate -- `sprintf` for HTML
+hbind -- `sprintf` for HTML
 ===
 
 API
@@ -6,7 +6,7 @@ API
 
 For most part, you'll use just one function of the library:
 
-    domplate_bind($template, $parameters = array())
+    hbind($template, $parameters = array())
 
 * `$template` is a string of HTML that is used as the source.
 * `$parameters` array is an associative array of *selector* => *replacement data*
@@ -14,7 +14,7 @@ For most part, you'll use just one function of the library:
 Selector syntax
 ---
 
-A domplate selector can scan html and replace parts of it. It's a bit like a regular expression, but tailored to HTML.
+A hbind selector can scan html and replace parts of it. It's a bit like a regular expression, but tailored to HTML.
 
 Syntax for selectors are similar to [CSS selectors](http://www.w3.org/TR/CSS2/selector.html), popularised by Javascript libraries such as [jQuery](http://jquery.com/). To select an element, you can use:
 
@@ -26,7 +26,7 @@ Syntax for selectors are similar to [CSS selectors](http://www.w3.org/TR/CSS2/se
 Selector target
 ---
 
-A domplate selector has a target to manipulate. By default, input data is bound to a text-node, as the sole content of the selected node (Eg. the `innerText` property of the selected element).
+A hbind selector has a target to manipulate. By default, input data is bound to a text-node, as the sole content of the selected node (Eg. the `innerText` property of the selected element).
 
 The selector may contain an *attribute axis*, following the identifier. If an axis is supplied, it denotes the attribute to manipulate.
 
@@ -65,7 +65,7 @@ Examples
 
 ###form.php
 
-    echo domplate_bind(
+    echo hbind(
       file_get_contents('form.tpl.html'),
       array(
         'form:action' => 'http://example.org',
