@@ -50,10 +50,10 @@ Examples
 
 ###form.tpl.html
 
-    <form action="http://example.org" method="post">
-    <p class="error"><b>Yay</b></p><p class="error">Fail</p>
+    <form method="post">
+    <p class="error"></p>
     <p>
-      <input type="text" name="name" value="no name" />
+      <input type="text" name="name" value="" />
     </p>
     <p>
       <input type="password" name="password" />
