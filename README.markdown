@@ -28,15 +28,18 @@ Selector target
 
 A hbind selector has a target to manipulate. By default, input data is bound to a text-node, as the sole content of the selected node (Eg. the `innerText` property of the selected element).
 
-The selector may contain an *attribute axis*, following the identifier. If an axis is supplied, it denotes the attribute to manipulate.
+A selector will default to escape HTML special characters, but some times you want to mix in raw HTML markup. You can do this by prefixing the selector with `!`.
 
-Syntax for axis is:
+If you want to replace the element entirely, rather than just the contents, you can prefixing the selector with `+`. When using this modifier, the replacement is always raw (Eg. it implies `!`).
 
-* `foo:value`    Targets the `value` attribute of an element `foo`
+The selector may contain an *attribute*, following the identifier. If an attribute is supplied, the value of this is manipulated ratehr than the element it self.
 
-A selector will default to escape HTML specialcharacters, but some times you want to mix in raw HTML markup. This is supported with the following syntax:
+To summarise the available targets, the syntax is:
 
-* `foo!`    Sets the `innerHTML` of elements of type `foo`
+* `foo`          Targets the `innerText` of elements of type `foo`
+* `foo!`         Targets the `innerHTML` of elements of type `foo`
+* `foo+`         Targets the `outerHTML` of elements of type `foo`
+* `foo:value`    Targets the `value` attribute of elements of type `foo`
 
 Replacement data
 ---
@@ -47,6 +50,30 @@ You can also pass `NULL` (or an empty array) as data, in which case, the element
 
 Examples
 ===
+
+Basic replacement
+---
+
+    $html = "<html><head><title>No Title</title></head><body><h1>No title</h1></body></html>";
+    echo hbind($html, array('title' => 'Example', 'h1' => 'This is an example'));
+
+###Output
+
+    <html><head><title>Example</title></head><body><h1>This is an example</h1></body></html>
+
+Repetition
+---
+
+    $data = array("Red", "Green", "Blue");
+    $html = '<ul><li></li></ul>';
+    echo hbind($html, array('li' => $data));
+
+###Output
+
+    <ul><li>Red</li><li>Green</li><li>Blue</li></ul>
+
+Form
+---
 
 ###form.tpl.html
 
