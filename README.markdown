@@ -36,9 +36,9 @@ The selector may contain an *attribute*, following the identifier. If an attribu
 
 To summarise the available targets, the syntax is:
 
-* `foo`          Targets the `innerText` of elements of type `foo`
-* `foo!`         Targets the `innerHTML` of elements of type `foo`
-* `foo+`         Targets the `outerHTML` of elements of type `foo`
+* `foo`          Targets the [`innerText`](http://www.quirksmode.org/dom/w3c_html.html#t04) of elements of type `foo`
+* `foo!`         Targets the [`innerHTML`](http://www.quirksmode.org/dom/w3c_html.html#t03) of elements of type `foo`
+* `foo+`         Targets the [`outerHTML`](http://www.quirksmode.org/dom/w3c_html.html#t05) of elements of type `foo`
 * `foo:value`    Targets the `value` attribute of elements of type `foo`
 
 Replacement data
