@@ -28,9 +28,15 @@ class hbind_Selector {
   protected $class;
   protected $attribute;
   protected $embed = false;
+  protected $outer = false;
   function __construct($string_raw) {
     if (preg_match('~(.*)!$~', $string_raw, $mm)) {
       $this->embed = true;
+      $string_raw = $mm[1];
+    }
+    if (preg_match('~(.*)\+$~', $string_raw, $mm)) {
+      $this->embed = true;
+      $this->outer = true;
       $string_raw = $mm[1];
     }
     if (preg_match('~^(.*)(:(.*))$~', $string_raw, $mm)) {
@@ -49,6 +55,9 @@ class hbind_Selector {
   function getArrayCopy() {
     return get_object_vars($this);
   }
+  /**
+   * Tests if a string matches the selector.
+   */
   function match($token) {
     if ($this->name) {
       if (0 !== strpos($token, '<' . $this->name)) {
@@ -134,7 +143,7 @@ class hbind_Selector {
     }
     return $result;
   }
-  function replace($input, $value) {
+  function apply($input, $value) {
     $escaped_value = $this->embed ? $value : htmlspecialchars($value);
     if ($this->attribute) {
       // TODO: delete attribute if null
@@ -154,25 +163,46 @@ class hbind_Selector {
     if ($value === null) {
       return "";
     }
-    // TODO: won't work with singlet tags
+    if ($this->outer) {
+      return $escaped_value;
+    }
+    // Regular tags
     if (preg_match('~^(<[^>]+>)([\s\S]*)(</[^>]+>)$~', $input, $mm)) {
       return $mm[1] . $escaped_value . $mm[3];
     }
-    throw new Exception("Can't replace");
+    // Singlet tags
+    if (preg_match('~^<([\w]+)([^>]*)/>$~', $input, $mm)) {
+      return '<' . $mm[1] . $mm[2] . '>' . $escaped_value . '</' . $mm[1] . '>';
+    }
+    throw new Exception("Can't apply");
   }
-  function bind($template, $value) {
+  /**
+   * Replaces matching rule in `$input` with `$value`
+   */
+  function bind($input, $value) {
     $compiled = "";
-    foreach ($this->slice($template) as $part) {
+    foreach ($this->slice($input) as $part) {
       list($type, $data) = $part;
       if ($type === 0) {
         $compiled .= $data;
       } else {
         foreach ((array)$value as $val) {
-          $compiled .= $this->replace($data, $val);
+          $compiled .= $this->apply($data, $val);
         }
       }
     }
     return $compiled;
+  }
+  /**
+   * Returns the first match in `$input`.
+   */
+  function extractFirst($input) {
+    foreach ($this->slice($input) as $part) {
+      list($type, $data) = $part;
+      if ($type === 1) {
+        return $data;
+      }
+    }
   }
 }
 

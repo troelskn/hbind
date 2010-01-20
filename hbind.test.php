@@ -114,6 +114,21 @@ class TestOfHbindBinding extends UnitTestCase {
         '#name:value' => 'no name'));
     $this->assertEqual(trim($expected), trim($output));
   }
+  function test_can_bind_to_singlet_tag() {
+    $selector = new hbind_Selector('p');
+    $output = $selector->bind('<div><p/></div>', 'Lorem Ipsum');
+    $this->assertPattern('~<p>Lorem Ipsum</p>~', $output);
+  }
+  function test_can_bind_to_singlet_tag_with_attributes() {
+    $selector = new hbind_Selector('p');
+    $output = $selector->bind('<div><p foo="bar"/></div>', 'Lorem Ipsum');
+    $this->assertPattern('~<p foo="bar">Lorem Ipsum</p>~', $output);
+  }
+  function test_can_bind_to_nested_tag() {
+    $selector = new hbind_Selector('div.foo');
+    $output = $selector->bind('<div><div class="foo"></div></div>', 'Lorem Ipsum');
+    $this->assertEqual('<div><div class="foo">Lorem Ipsum</div></div>', $output);
+  }
 }
 
 class TestOfHbindBindingToFormUseCase extends UnitTestCase {
@@ -147,5 +162,6 @@ class TestOfHbindBindingToFormUseCase extends UnitTestCase {
               ':value' => $email)),
           '<input type="password" name="password"/>')));
     // TODO: What to assert here???
+    // var_dump($output);
   }
 }
