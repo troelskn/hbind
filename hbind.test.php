@@ -129,6 +129,15 @@ class TestOfHbindBinding extends UnitTestCase {
     $output = $selector->bind('<div><div class="foo"></div></div>', 'Lorem Ipsum');
     $this->assertEqual('<div><div class="foo">Lorem Ipsum</div></div>', $output);
   }
+  function test_can_map_a_nested_structure() {
+    $data = array(
+      array("Red", "Green", "Blue"),
+      array("Foo", "Bar", "Cuux"));
+    $html = '<table><tbody><tr><td></td></tr></tbody></table>';
+    $output = hbind($html, array('tr/td' => $data));
+    $this->assertEqual('<table><tbody><tr><td>Red</td><td>Green</td><td>Blue</td></tr><tr><td>Foo</td><td>Bar</td><td>Cuux</td></tr></tbody></table>', $output);
+  }
+
 }
 
 class TestOfHbindBindingToFormUseCase extends UnitTestCase {

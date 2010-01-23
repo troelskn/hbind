@@ -32,7 +32,7 @@ A selector will default to escape HTML special characters, but some times you wa
 
 If you want to replace the element entirely, rather than just the contents, you can prefixing the selector with `+`. When using this modifier, the replacement is always raw (Eg. it implies `!`).
 
-The selector may contain an *attribute*, following the identifier. If an attribute is supplied, the value of this is manipulated ratehr than the element it self.
+The selector may contain an *attribute*, following the identifier. If an attribute is supplied, the value of this is manipulated rather than the element itself.
 
 To summarise the available targets, the syntax is:
 
@@ -48,6 +48,11 @@ Each selector is given some data to replace/update with. This can either be a st
 
 You can also pass `NULL` (or an empty array) as data, in which case, the element is removed from the template.
 
+Nested mapping
+===
+
+Some times you need to map nested data structures to the document. This is supported through nested selectors. A nested selector contains one or more selectors separated by a forward slash. Each level maps to a level in the passed bind-data. For example, if you use a selector with two levels, you must pass an array of arrays.
+
 Examples
 ===
 
@@ -59,7 +64,14 @@ Basic replacement
 
 ###Output
 
-    <html><head><title>Example</title></head><body><h1>This is an example</h1></body></html>
+    <html>
+      <head>
+        <title>Example</title>
+      </head>
+      <body>
+        <h1>This is an example</h1>
+      </body>
+    </html>
 
 Repetition
 ---
@@ -70,7 +82,11 @@ Repetition
 
 ###Output
 
-    <ul><li>Red</li><li>Green</li><li>Blue</li></ul>
+    <ul>
+      <li>Red</li>
+      <li>Green</li>
+      <li>Blue</li>
+    </ul>
 
 Form
 ---
@@ -113,3 +129,30 @@ Form
       <input type="submit" id="login" />
     </p>
     </form>
+
+Nested selector
+---
+
+    $data = array(
+      array("Red", "Green", "Blue"),
+      array("Foo", "Bar", "Cuux"));
+    $html = '<table><tbody><tr><td></td></tr></tbody></table>';
+    echo hbind($html, array('tr/td' => $data));
+    echo "\n---\n";
+
+###Output
+
+    <table>
+      <tbody>
+        <tr>
+          <td>Red</td>
+          <td>Green</td>
+          <td>Blue</td>
+        </tr>
+        <tr>
+          <td>Foo</td>
+          <td>Bar</td>
+          <td>Cuux</td>
+        </tr>
+      </tbody>
+    </table>

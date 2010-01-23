@@ -10,13 +10,27 @@
  * A value may be a string, an array of strings or NULL.
  * Binding NULL will remove the selected element from the source
  */
-function hbind($template, $parameters = array()) {
-  foreach ($parameters as $identifier => $value) {
-    $selector = new hbind_Selector($identifier);
-    $template = $selector->bind($template, $value);
+function hbind($template, $data = array()) {
+  foreach ($data as $identifier => $value) {
+    list($first, $remainder) = explode('/', $identifier, 2);
+    if (!$remainder) {
+      $selector = new hbind_Selector($identifier);
+      $template = $selector->bind($template, $value);
+    } else {
+      $selector = new hbind_Selector($first.'+');
+      $current_html = $selector->extractFirst($template);
+      $bound = array();
+      foreach ($value as $_value) {
+        $bound[] = $selector->bind(
+          $current_html,
+          hbind($current_html, array($remainder => $_value)));
+      }
+      $template = $selector->bind($template, $bound);
+    }
   }
   return $template;
 }
+
 
 /**
  * A hbind selector.
